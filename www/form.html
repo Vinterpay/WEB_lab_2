@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f9f6ff;
+      background-color: #f9f7f0;
       margin: 0;
       padding: 0;
       display: flex;
@@ -60,8 +60,8 @@
 
     input:focus, select:focus {
       outline: none;
-      border-color: #9b59b6;
-      box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.2);
+      border-color: #27ae60;
+      box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
     }
 
     .checkbox-group, .radio-group {
@@ -82,7 +82,7 @@
     }
 
     button {
-      background-color: #9b59b6;
+      background-color: #27ae60;
       color: white;
       border: none;
       font-size: 18px;
@@ -93,7 +93,21 @@
     }
 
     button:hover {
-      background-color: #8e44ad;
+      background-color: #219653;
+    }
+
+    #result {
+      margin-top: 24px;
+      padding: 16px;
+      background: #ecf8f2;
+      border-radius: 8px;
+      display: none;
+      animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .highlight {
@@ -110,7 +124,7 @@
   <div class="form-container">
     <h1>Регистрация студента</h1>
 
-    <form id="studentForm" action="process.php" method="POST">
+    <form id="studentForm">
       <label for="name">Имя:</label>
       <input type="text" id="name" name="name" required>
 
@@ -120,26 +134,28 @@
       <label for="faculty">Факультет:</label>
       <select id="faculty" name="faculty" required>
         <option value="">— Выберите —</option>
-        <option value="Информационные технологии">Информационные технологии</option>
-        <option value="Экономика">Экономика</option>
-        <option value="Медицина">Медицина</option>
-        <option value="Юриспруденция">Юриспруденция</option>
+        <option value="it">Информационные технологии</option>
+        <option value="economics">Экономика</option>
+        <option value="medicine">Медицина</option>
+        <option value="law">Юриспруденция</option>
       </select>
 
       <div class="checkbox-group">
         <label>
-          <input type="checkbox" name="rules" value="1">
+          <input type="checkbox" name="rules" value="accepted">
           Согласен с правилами
         </label>
       </div>
 
       <div class="radio-group">
-        <label><input type="radio" name="study_form" value="Очно" required> Очно</label>
-        <label><input type="radio" name="study_form" value="Заочно" required> Заочно</label>
+        <label><input type="radio" name="study_form" value="full-time"> Очно</label>
+        <label><input type="radio" name="study_form" value="part-time"> Заочно</label>
       </div>
 
       <button type="submit">Зарегистрироваться</button>
     </form>
+
+    <div id="result"></div>
   </div>
 
   <script src="script.js"></script>
