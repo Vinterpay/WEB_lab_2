@@ -12,7 +12,8 @@ function resetReminder() {
 function checkInactivity() {
   const now = Date.now();
   if (now - lastActivity >= 15000) {
-    document.querySelectorAll('input, select').forEach(el => {
+    const inputs = document.querySelectorAll('input, select');
+    inputs.forEach(el => {
       el.classList.add('highlight');
       setTimeout(() => el.classList.remove('highlight'), 3000);
     });
@@ -21,14 +22,47 @@ function checkInactivity() {
 
 resetReminder();
 
-// Только alert перед отправкой — форма УЙДЁТ в process.php
-document.getElementById("studentForm").addEventListener("submit", function() {
-  const name = this.name.value;
-  const age = this.age.value;
-  const faculty = this.faculty.options[this.faculty.selectedIndex].text || this.faculty.value;
-  const rules = this.rules.checked ? "Да" : "Нет";
-  const studyForm = this.querySelector('input[name="study_form"]:checked')?.value || "Не выбрано";
+document.getElementById("studentForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+  let output = "<h2>Ваша регистрация:</h2>";
 
-  alert(`Вы отправляете:\nИмя: ${name}\nВозраст: ${age}\nФакультет: ${faculty}\nСогласие с правилами: ${rules}\nФорма обучения: ${studyForm}`);
-  // НЕТ preventDefault() → отправка в process.php
+  const labels = {
+    name: "Имя",
+    age: "Возраст",
+    faculty: "Факультет",
+    study_form: "Форма обучения"
+  };
+
+  const facultyMap = {
+    it: "Информационные технологии",
+    economics: "Экономика",
+    medicine: "Медицина",
+    law: "Юриспруденция"
+  };
+
+  const studyFormMap = {
+    "full-time": "Очно",
+    "part-time": "Заочно"
+  };
+
+  for (const [key, value] of formData.entries()) {
+    if (key === "rules") {
+      output += `<p><b>Согласие с правилами:</b> Да</p>`;
+    } else if (key === "faculty") {
+      output += `<p><b>${labels[key]}:</b> ${facultyMap[value]}</p>`;
+    } else if (key === "study_form") {
+      output += `<p><b>${labels[key]}:</b> ${studyFormMap[value]}</p>`;
+    } else {
+      output += `<p><b>${labels[key] || key}:</b> ${value}</p>`;
+    }
+  }
+
+  if (!formData.has("rules")) {
+    output += `<p><b>Согласие с правилами:</b> Нет</p>`;
+  }
+
+  document.getElementById("result").innerHTML = output;
+  document.getElementById("result").style.display = "block";
+  resetReminder();
 });
