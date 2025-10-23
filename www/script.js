@@ -22,7 +22,10 @@ function checkInactivity() {
 
 resetReminder();
 
+// Для AJAX отправки (если нужно оставить без перезагрузки)
 document.getElementById("studentForm").addEventListener("submit", function(e) {
+  // Если нужно оставить AJAX, раскомментируйте следующие строки:
+  /*
   e.preventDefault();
   const formData = new FormData(this);
   let output = "<h2>Ваша регистрация:</h2>";
@@ -65,4 +68,5 @@ document.getElementById("studentForm").addEventListener("submit", function(e) {
   document.getElementById("result").innerHTML = output;
   document.getElementById("result").style.display = "block";
   resetReminder();
+  */
 });
