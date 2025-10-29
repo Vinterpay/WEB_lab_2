@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация студента - Университет</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>➕ Регистрация нового студента</h1>
+            <p>Заполните все поля для регистрации в системе</p>
+        </div>
+        
+        <div class="content">
+            <div class="card">
+                <form action="process_registration.php" method="POST">
+                    <div class="form-group">
+                        <label for="full_name">👤 ФИО студента:</label>
+                        <input type="text" id="full_name" name="full_name" required placeholder="Введите полное ФИО">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">📧 Электронная почта:</label>
+                        <input type="email" id="email" name="email" required placeholder="student@university.ru">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">📞 Телефон для связи:</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="+7 (XXX) XXX-XX-XX">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="faculty">🎓 Факультет:</label>
+                        <select id="faculty" name="faculty" required>
+                            <option value="">-- Выберите факультет --</option>
+                            <option value="Информационные системы">Информационные системы</option>
+                            <option value="Компьютерные науки">Компьютерные науки</option>
+                            <option value="Экономика">Экономика</option>
+                            <option value="Менеджмент">Менеджмент</option>
+                            <option value="Юриспруденция">Юриспруденция</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="course">📚 Курс:</label>
+                        <select id="course" name="course" required>
+                            <option value="">-- Выберите курс --</option>
+                            <option value="1 курс">1 курс</option>
+                            <option value="2 курс">2 курс</option>
+                            <option value="3 курс">3 курс</option>
+                            <option value="4 курс">4 курс</option>
+                            <option value="Магистратура">Магистратура</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="group_name">👥 Группа:</label>
+                        <input type="text" id="group_name" name="group_name" required placeholder="Например: ИС-21-01">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="birth_date">🎂 Дата рождения:</label>
+                        <input type="date" id="birth_date" name="birth_date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">🏠 Адрес проживания:</label>
+                        <textarea id="address" name="address" rows="3" placeholder="Введите полный адрес проживания..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success">✅ Зарегистрировать студента</button>
+                </form>
+            </div>
+            
+            <div class="nav-links">
+                <a href="index.php" class="btn btn-secondary">🏠 На главную</a>
+                <a href="students.php" class="btn">👥 Список студентов</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Установка максимальной даты рождения (18 лет назад)
+        const today = new Date();
+        const maxDate = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
+        document.getElementById('birth_date').max = maxDate.toISOString().split('T')[0];
+        
+        // Автозаполнение группы на основе факультета и курса
+        document.getElementById('faculty').addEventListener('change', updateGroup);
+        document.getElementById('course').addEventListener('change', updateGroup);
+        
+        function updateGroup() {
+            const faculty = document.getElementById('faculty').value;
+            const course = document.getElementById('course').value;
+            
+            if (faculty && course) {
+                const facultyCode = getFacultyCode(faculty);
+                const courseCode = course.charAt(0);
+                const groupName = `${facultyCode}-${courseCode}1-01`;
+                document.getElementById('group_name').value = groupName;
+            }
+        }
+        
+        function getFacultyCode(faculty) {
+            const codes = {
+                'Информационные системы': 'ИС',
+                'Компьютерные науки': 'КН', 
+                'Экономика': 'ЭК',
+                'Менеджмент': 'МН',
+                'Юриспруденция': 'ЮР'
+            };
+            return codes[faculty] || 'ГР';
+        }
+    </script>
+</body>
+</html>

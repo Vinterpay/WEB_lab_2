@@ -1,5 +1,4 @@
-﻿version: '3.8'
-services:
+﻿services:
   nginx:
     image: nginx:alpine
     container_name: lab5_nginx
@@ -10,9 +9,6 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
-    restart: unless-stopped
-    networks:
-      - lab5-network
 
   php:
     build: .
@@ -21,9 +17,6 @@ services:
       - ./www:/var/www/html
     expose:
       - "9000"
-    restart: unless-stopped
-    networks:
-      - lab5-network
 
   db:
     image: mysql:8.0
@@ -37,24 +30,14 @@ services:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
-    restart: unless-stopped
-    networks:
-      - lab5-network
 
   adminer:
     image: adminer
     container_name: lab5_adminer
-    restart: always
     ports:
       - "8081:8080"
     depends_on:
       - db
-    networks:
-      - lab5-network
 
 volumes:
   db_data:
-
-networks:
-  lab5-network:
-    driver: bridge
